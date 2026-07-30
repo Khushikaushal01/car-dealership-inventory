@@ -45,13 +45,7 @@ car-dealership-inventory/
 ```bash
 cd backend
 python -m venv venv
-
-# activate the virtual environment
-# macOS/Linux:
 source venv/bin/activate
-# Windows:
-venv\Scripts\activate
-
 pip install -r requirements.txt
 ```
 
