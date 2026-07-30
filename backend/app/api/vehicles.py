@@ -100,16 +100,13 @@ def delete_vehicle(
     return {"message": "Vehicle deleted successfully"}
 
 
-# Inventory purchase endpoint with path parameter
 @router.post("/{id}/purchase", response_model=VehicleOut)
-def purchase_vehicle_by_id(
+def purchase_vehicle(
     id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """
-    Purchase a vehicle by decrementing its quantity by 1.
-    """
+    """Purchase a vehicle by decrementing its quantity by 1."""
     db_vehicle = db.query(Vehicle).filter(Vehicle.id == id).first()
     if not db_vehicle:
         raise HTTPException(
@@ -127,30 +124,14 @@ def purchase_vehicle_by_id(
     return db_vehicle
 
 
-# Inventory purchase endpoint with body parameter /api/vehicles/purchase
-@router.post("/purchase", response_model=VehicleOut)
-def purchase_vehicle_body(
-    payload: dict,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
-):
-    vehicle_id = payload.get("vehicle_id")
-    if not vehicle_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="vehicle_id is required"
-        )
-    return purchase_vehicle_by_id(id=vehicle_id, db=db, current_user=current_user)
-
-
-# Inventory restock endpoint with path parameter
 @router.post("/{id}/restock", response_model=VehicleOut)
-def restock_vehicle_by_id(
+def restock_vehicle(
     id: int,
     quantity: int = Query(1, alias="qty", description="Quantity to add"),
     db: Session = Depends(get_db),
     current_admin: User = Depends(get_current_admin)
 ):
+    """Restock a vehicle by incrementing its quantity. Admin only."""
     db_vehicle = db.query(Vehicle).filter(Vehicle.id == id).first()
     if not db_vehicle:
         raise HTTPException(
@@ -161,20 +142,3 @@ def restock_vehicle_by_id(
     db.commit()
     db.refresh(db_vehicle)
     return db_vehicle
-
-
-# Inventory restock endpoint with body parameter /api/vehicles/restock
-@router.post("/restock", response_model=VehicleOut)
-def restock_vehicle_body(
-    payload: dict,
-    db: Session = Depends(get_db),
-    current_admin: User = Depends(get_current_admin)
-):
-    vehicle_id = payload.get("vehicle_id")
-    quantity = payload.get("quantity", 1)
-    if not vehicle_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="vehicle_id is required"
-        )
-    return restock_vehicle_by_id(id=vehicle_id, quantity=quantity, db=db, current_admin=current_admin)
