@@ -49,8 +49,7 @@ def test_create_vehicle_authorized():
     }
 
     response = client.post("/api/vehicles", json=payload, headers=headers)
-    assert response.status_code == 200 or response.status_code == 210  # Wait, let's assert 200 or 201
-    assert response.status_code in [200, 201]
+    assert response.status_code == 201
     data = response.json()
     assert data["make"] == "Toyota"
     assert data["model"] == "Camry"
