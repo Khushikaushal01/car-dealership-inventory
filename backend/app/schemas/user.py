@@ -1,12 +1,16 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
 
 
 class UserCreate(BaseModel):
+    """
+    Registration payload.  is_admin is intentionally absent — callers
+    can never grant themselves admin privileges at sign-up.
+    """
     username: str
     email: str
-    password: str
-    is_admin: Optional[bool] = False
+    # Enforce minimum password strength at the schema layer
+    password: str = Field(..., min_length=8, description="Minimum 8 characters")
 
 
 class UserLogin(BaseModel):

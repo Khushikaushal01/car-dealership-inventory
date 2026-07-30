@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Secrets — never commit these
+.env
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# SQLite databases (real data — not for version control)
+*.db
+*.sqlite3
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
