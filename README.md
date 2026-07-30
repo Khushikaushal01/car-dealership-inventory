@@ -125,11 +125,11 @@ print('Admin promoted successfully.')
 
 **How I used them:**
 
-- **Test-first workflow:** For each endpoint (register, login, vehicle CRUD, search, purchase, restock), I prompted the AI to write pytest test cases *before* any implementation existed, then asked for the minimal implementation needed to make those tests pass — a strict Red-Green-Refactor cycle.
-- **Security review:** I asked the AI to review the implementation after it was working, which surfaced issues I then fixed manually — including an admin-escalation vulnerability in the registration flow and a hardcoded JWT secret that needed to move into an environment variable.
-- **Debugging:** When tests failed, I pasted the exact error and relevant code and asked the AI to explain the cause before applying any fix.
-- **Frontend scaffolding:** Used the AI to scaffold React components (auth forms, dashboard, admin panel) against the already-working API, then adjusted styling, state handling, and edge cases (like 422 error parsing) manually.
-- **Documentation:** Used AI to draft the initial structure of this README and the PROMPTS.md file, then edited them to accurately reflect what actually happened during development.
+- **Test-first workflow** *(Claude AI-DLC + Antigravity):* For each endpoint (register, login, vehicle CRUD, search, purchase, restock), I prompted the AI to write pytest test cases *before* any implementation existed, then asked for the minimal implementation needed to make those tests pass — a strict Red-Green-Refactor cycle.
+- **Security review** *(ChatGPT):* I asked ChatGPT to review the implementation after it was working, which surfaced issues I then fixed manually — including an admin-escalation vulnerability in the registration flow and a hardcoded JWT secret that needed to move into an environment variable.
+- **Debugging** *(Antigravity):* When tests failed or runtime errors occurred, I pasted the exact error and relevant code and asked Antigravity to explain the cause before applying any fix.
+- **Frontend scaffolding** *(Antigravity + VS Code Copilot):* Used Antigravity to scaffold React components (auth forms, dashboard, admin panel) against the already-working API, with VS Code Copilot assisting inline for styling and state handling. Edge cases like 422 error parsing were adjusted manually.
+- **Documentation** *(ChatGPT + Antigravity):* Used ChatGPT to draft the initial structure of this README and Antigravity to generate the PROMPTS.md file, then edited both to accurately reflect what actually happened during development.
 
 **Reflection:** AI significantly sped up boilerplate — test scaffolding, route structure, React components. But the business-logic edge cases (stock going negative, role-based access, the admin self-escalation bug) still needed a manual review pass; a couple of those slipped through the first AI-generated implementation and were only caught by explicitly asking for a security-focused review afterward. That's the main lesson: AI-generated code still needs an adversarial second look, not just a test-passing check.
 
