@@ -172,4 +172,5 @@ pytest -v
 - **Frontend:** [car-dealership-inventory-wine.vercel.app](https://car-dealership-inventory-wine.vercel.app/)
 - **Backend API:** [car-dealership-inventory-vm5k.onrender.com](https://car-dealership-inventory-vm5k.onrender.com)
 
-> **Note:** The backend is on Render's free tier, so the first request after inactivity can take 30–60 seconds to wake up — that's expected, not a bug.
+
+> **Deployment Note:** The backend service is deployed on Render's free plan. Initial response times may be elevated (up to 60s) following periods of inactivity — subsequent requests are unaffected.
