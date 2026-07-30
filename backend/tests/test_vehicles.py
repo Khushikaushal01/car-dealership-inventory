@@ -56,3 +56,80 @@ def test_create_vehicle_authorized():
     assert data["price"] == 25000.0
     assert data["quantity"] == 5
     assert "id" in data
+
+
+def test_purchase_vehicle():
+    # Login to get token
+    login_response = client.post("/api/auth/login", json={
+        "email": "test_vehicle_user@example.com",
+        "password": "password123"
+    })
+    token = login_response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # Create a vehicle to purchase
+    create_response = client.post("/api/vehicles", json={
+        "make": "Honda",
+        "model": "Civic",
+        "category": "Sedan",
+        "price": 22000.0,
+        "quantity": 10
+    }, headers=headers)
+    assert create_response.status_code == 201
+    vehicle_id = create_response.json()["id"]
+
+    # Purchase the vehicle
+    purchase_response = client.post(f"/api/vehicles/{vehicle_id}/purchase", headers=headers)
+    assert purchase_response.status_code == 200
+    assert purchase_response.json()["quantity"] == 9
+
+
+def test_restock_vehicle():
+    # Register an admin user if not exists
+    db = SessionLocal()
+    admin = db.query(User).filter(User.email == "admin_inventory@example.com").first()
+    if not admin:
+        client.post("/api/auth/register", json={
+            "username": "admininventory",
+            "email": "admin_inventory@example.com",
+            "password": "adminpassword",
+            "is_admin": True
+        })
+    db.close()
+
+    # Login as admin
+    login_response = client.post("/api/auth/login", json={
+        "email": "admin_inventory@example.com",
+        "password": "adminpassword"
+    })
+    admin_token = login_response.json()["access_token"]
+    admin_headers = {"Authorization": f"Bearer {admin_token}"}
+
+    # Login as regular user
+    user_login = client.post("/api/auth/login", json={
+        "email": "test_vehicle_user@example.com",
+        "password": "password123"
+    })
+    user_token = user_login.json()["access_token"]
+    user_headers = {"Authorization": f"Bearer {user_token}"}
+
+    # Create a vehicle to restock
+    create_response = client.post("/api/vehicles", json={
+        "make": "Ford",
+        "model": "F-150",
+        "category": "Truck",
+        "price": 45000.0,
+        "quantity": 2
+    }, headers=user_headers)
+    assert create_response.status_code == 201
+    vehicle_id = create_response.json()["id"]
+
+    # Try to restock as regular user (should fail with 403)
+    restock_user_res = client.post(f"/api/vehicles/{vehicle_id}/restock?qty=5", headers=user_headers)
+    assert restock_user_res.status_code == 403
+
+    # Restock as admin (should succeed with 200)
+    restock_admin_res = client.post(f"/api/vehicles/{vehicle_id}/restock?qty=5", headers=admin_headers)
+    assert restock_admin_res.status_code == 200
+    assert restock_admin_res.json()["quantity"] == 7
+
