@@ -1,17 +1,22 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
+import Navbar from './Navbar';
+import Dashboard from './Dashboard';
+import Login from './Login';
+import Register from './Register';
+import Admin from './Admin';
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen bg-[#f3edd9] text-[#1f1f1f] antialiased">
-        <main className="p-4">
+        <Navbar />
+        <main>
           <Routes>
-            <Route path="/" element={<div className="font-bold">Dashboard Placeholder</div>} />
-            <Route path="/login" element={<div>Login Placeholder</div>} />
-            <Route path="/register" element={<div>Register Placeholder</div>} />
-            <Route path="/admin" element={<div>Admin Placeholder</div>} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </main>
       </div>
