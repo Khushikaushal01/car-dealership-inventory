@@ -105,5 +105,12 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
     access_token = create_access_token(data={"sub": user.email})
     return {
         "access_token": access_token,
-        "token_type": "bearer"
+        "token_type": "bearer",
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "role": user.role if user.role else ("admin" if user.is_admin else "user"),
+            "is_admin": user.is_admin
+        }
     }
