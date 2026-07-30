@@ -107,6 +107,9 @@ def purchase_vehicle_by_id(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    """
+    Purchase a vehicle by decrementing its quantity by 1.
+    """
     db_vehicle = db.query(Vehicle).filter(Vehicle.id == id).first()
     if not db_vehicle:
         raise HTTPException(
