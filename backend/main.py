@@ -32,6 +32,29 @@ def run_migrations():
 
 run_migrations()
 
+
+def seed_initial_data():
+    """Auto-seed sample vehicles if database is empty (ideal for cloud free tiers)."""
+    from app.database import SessionLocal
+    db = SessionLocal()
+    try:
+        if db.query(Vehicle).count() == 0:
+            sample_vehicles = [
+                Vehicle(make="TOYOTA", model="SUPRA MK4", category="SPORTS CAR", price=450000.0, quantity=5),
+                Vehicle(make="NISSAN", model="SKYLINE GT-R R34", category="SPORTS CAR", price=850000.0, quantity=2),
+                Vehicle(make="HONDA", model="CIVIC TYPE R", category="HATCHBACK", price=350000.0, quantity=12),
+                Vehicle(make="MAHINDRA", model="THAR 4X4", category="SUV", price=180000.0, quantity=9),
+            ]
+            db.add_all(sample_vehicles)
+            db.commit()
+    except Exception:
+        db.rollback()
+    finally:
+        db.close()
+
+
+seed_initial_data()
+
 app = FastAPI()
 
 app.include_router(auth_router)
