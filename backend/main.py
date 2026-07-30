@@ -1,3 +1,8 @@
+from dotenv import load_dotenv
+
+# Load .env before any other import so JWT_SECRET is available to jwt.py
+load_dotenv()
+
 from fastapi import FastAPI
 from app.api.auth import router as auth_router
 from app.api.vehicles import router as vehicles_router
