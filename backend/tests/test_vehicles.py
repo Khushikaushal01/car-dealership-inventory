@@ -133,3 +133,62 @@ def test_restock_vehicle():
     assert restock_admin_res.status_code == 200
     assert restock_admin_res.json()["quantity"] == 7
 
+
+def test_search_and_update_and_delete_vehicle():
+    # Login as admin to delete later
+    admin_login = client.post("/api/auth/login", json={
+        "email": "admin_inventory@example.com",
+        "password": "adminpassword"
+    })
+    admin_headers = {"Authorization": f"Bearer {admin_login.json()['access_token']}"}
+
+    # Login as regular user
+    user_login = client.post("/api/auth/login", json={
+        "email": "test_vehicle_user@example.com",
+        "password": "password123"
+    })
+    headers = {"Authorization": f"Bearer {user_login.json()['access_token']}"}
+
+    # Create a vehicle to test update, search, delete
+    create_response = client.post("/api/vehicles", json={
+        "make": "Tesla",
+        "model": "Model 3",
+        "category": "Electric",
+        "price": 35000.0,
+        "quantity": 3
+    }, headers=headers)
+    assert create_response.status_code == 201
+    vehicle_id = create_response.json()["id"]
+
+    # Search vehicle by make
+    search_response = client.get(f"/api/vehicles/search?make=Tesla")
+    assert search_response.status_code == 200
+    assert len(search_response.json()) >= 1
+    assert search_response.json()[0]["model"] == "Model 3"
+
+    # Search vehicle by category
+    search_response = client.get(f"/api/vehicles/search?category=Electric")
+    assert search_response.status_code == 200
+    assert len(search_response.json()) >= 1
+
+    # Update vehicle (increase price)
+    update_response = client.put(f"/api/vehicles/{vehicle_id}", json={
+        "price": 38000.0
+    }, headers=headers)
+    assert update_response.status_code == 200
+    assert update_response.json()["price"] == 38000.0
+
+    # Try to delete as regular user (should fail with 403)
+    delete_user_res = client.delete(f"/api/vehicles/{vehicle_id}", headers=headers)
+    assert delete_user_res.status_code == 403
+
+    # Delete as admin (should succeed with 200)
+    delete_admin_res = client.delete(f"/api/vehicles/{vehicle_id}", headers=admin_headers)
+    assert delete_admin_res.status_code == 200
+    assert delete_admin_res.json()["message"] == "Vehicle deleted successfully"
+
+    # Make sure it's gone
+    search_response = client.get(f"/api/vehicles")
+    assert not any(v["id"] == vehicle_id for v in search_response.json())
+
+
