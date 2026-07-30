@@ -93,13 +93,18 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login")
 def login(user_in: UserLogin, db: Session = Depends(get_db)):
+    """Authenticate and return a signed JWT plus basic user info."""
     user = db.query(User).filter(User.email == user_in.email).first()
     if not user or not verify_password(user_in.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect email or password"
         )
-    
+
+    # Derive role: DB role column is authoritative; fall back to is_admin flag
+    # for rows created before role column existed.
+    role = user.role or ("admin" if user.is_admin else "user")
+
     access_token = create_access_token(data={"sub": user.email})
     return {
         "access_token": access_token,
@@ -108,7 +113,7 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
             "id": user.id,
             "username": user.username,
             "email": user.email,
-            "role": user.role if user.role else ("admin" if user.is_admin else "user"),
-            "is_admin": user.is_admin
+            "role": role,
+            "is_admin": bool(user.is_admin),
         }
     }
