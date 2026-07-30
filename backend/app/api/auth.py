@@ -78,14 +78,14 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
             detail="Username already registered"
         )
 
-    is_admin_user = "admin" in user_in.email.lower()
-    
+    # Security: all new registrations are always role='user', is_admin=False.
+    # Admin privileges must be granted directly in the database after the fact.
     db_user = User(
         username=user_in.username,
         email=user_in.email,
         password=hash_password(user_in.password),
-        role="admin" if is_admin_user else "user",
-        is_admin=is_admin_user,
+        role="user",
+        is_admin=False,
     )
     db.add(db_user)
     db.commit()
