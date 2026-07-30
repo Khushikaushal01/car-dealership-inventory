@@ -24,7 +24,14 @@ export default function Login() {
       localStorage.setItem('user', JSON.stringify(user));
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Incorrect email or password');
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        setError(detail[0].msg);
+      } else if (typeof detail === 'string') {
+        setError(detail);
+      } else {
+        setError('Incorrect email or password');
+      }
     } finally {
       setLoading(false);
     }
@@ -141,7 +148,7 @@ export default function Login() {
             </p>
             {/* Retro Barcode Accent */}
             <div className="flex items-center space-x-2">
-              <span className="text-[9px] font-mono font-bold text-slate-400">APX-004-SYS</span>
+              <span className="text-[9px] font-mono font-bold text-slate-400">MII-004-SYS</span>
               <div className="barcode w-24 h-6"></div>
             </div>
           </div>

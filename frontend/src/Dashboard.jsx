@@ -82,7 +82,7 @@ export default function Dashboard() {
               BUILT FOR THE STREETS. BORN TO INSPIRE.
             </span>
             <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-[#1f1f1f] leading-none">
-              JDM INVENTORY / <span className="text-[#d1382b]">伝説の車</span>
+              CAR DEALERSHIP INVENTORY / <span className="text-[#d1382b]">伝説の車</span>
             </h1>
           </div>
           <div className="mt-4 md:mt-0 flex flex-col items-end border-l-2 md:border-l-0 md:border-t-0 border-[#1f1f1f] pl-4 md:pl-0 pt-2 md:pt-0">
@@ -143,7 +143,7 @@ export default function Dashboard() {
               />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-[#1f1f1f] uppercase tracking-wider mb-2">Min Price ($)</label>
+              <label className="block text-[10px] font-bold text-[#1f1f1f] uppercase tracking-wider mb-2">Min Price (₹)</label>
               <input
                 type="number"
                 name="minPrice"
@@ -154,7 +154,7 @@ export default function Dashboard() {
               />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-[#1f1f1f] uppercase tracking-wider mb-2">Max Price ($)</label>
+              <label className="block text-[10px] font-bold text-[#1f1f1f] uppercase tracking-wider mb-2">Max Price (₹)</label>
               <input
                 type="number"
                 name="maxPrice"
@@ -233,7 +233,7 @@ export default function Dashboard() {
                     <div className="flex flex-col">
                       <span className="text-[9px] font-bold text-slate-400 uppercase leading-none">PRICING</span>
                       <span className="text-2xl font-black text-[#d1382b] tracking-tight leading-none mt-1">
-                        ${vehicle.price.toLocaleString()}
+                        ₹{vehicle.price.toLocaleString('en-IN')}
                       </span>
                     </div>
 
@@ -258,7 +258,7 @@ export default function Dashboard() {
 
         {/* Page Footer Barcode Accent */}
         <footer className="mt-16 pt-8 border-t-2 border-[#1f1f1f] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400">
-          <span>APEX MOTORS INC. // DESIGN INSPIRATION 2002 SUMMER</span>
+          <span>MADE IN INDIA MOTORS INC. // DESIGN INSPIRATION 2002 SUMMER</span>
           <div className="flex items-center space-x-2">
             <span>VOL.04_SPECIFICATIONS_SYSTEM</span>
             <div className="barcode w-32 h-8"></div>

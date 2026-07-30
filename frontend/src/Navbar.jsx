@@ -21,10 +21,10 @@ export default function Navbar() {
         </div>
         <div className="flex flex-col">
           <span className="text-lg font-black tracking-widest leading-none">
-            APEX INVENTORY
+            MADE IN INDIA
           </span>
           <span className="text-[9px] font-bold tracking-widest uppercase text-[#1b5c65] leading-none mt-1">
-            SUPRA STYLE MAGAZINE
+            WHEELS ON THE ROAD
           </span>
         </div>
       </div>

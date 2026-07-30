@@ -204,11 +204,11 @@ export default function Admin() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Price / 価格 ($)</label>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Price / 価格 (₹)</label>
                 <input
                   type="number"
                   required
-                  placeholder="25000"
+                  placeholder="500000"
                   className="w-full bg-[#faf8f5] border-2 border-[#1f1f1f] text-[#1f1f1f] px-3 py-2 text-xs font-bold focus:outline-none focus:bg-[#f3edd9] transition-all"
                   value={newVehicle.price}
                   onChange={(e) => setNewVehicle({ ...newVehicle, price: e.target.value })}
@@ -263,7 +263,7 @@ export default function Admin() {
                         {v.category}
                       </td>
                       <td className="py-3 px-4 border-r border-[#1f1f1f] font-bold">
-                        ${v.price.toLocaleString()}
+                        ₹{v.price.toLocaleString('en-IN')}
                         <button
                           onClick={() => handleUpdatePrice(v)}
                           className="ml-2 text-[#1b5c65] hover:text-[#d1382b] underline cursor-pointer font-bold font-sans text-[10px]"
@@ -309,7 +309,7 @@ export default function Admin() {
 
         {/* Page Footer Barcode Accent */}
         <footer className="mt-16 pt-8 border-t-2 border-[#1f1f1f] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400">
-          <span>APEX MOTORS INC. // DESIGN INSPIRATION 2002 SUMMER</span>
+          <span>MADE IN INDIA MOTORS INC. // DESIGN INSPIRATION 2002 SUMMER</span>
           <div className="flex items-center space-x-2">
             <span>VOL.04_SPECIFICATIONS_SYSTEM</span>
             <div className="barcode w-32 h-8"></div>
