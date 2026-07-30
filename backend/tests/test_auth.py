@@ -5,8 +5,10 @@ client = TestClient(app)
 
 
 def test_register_user():
-    response = client.post(
-        "/api/auth/register"
-    )
+    response = client.post("/api/auth/register")
+    assert response.status_code == 200
 
+
+def test_login_user():
+    response = client.post("/api/auth/login")
     assert response.status_code == 200
