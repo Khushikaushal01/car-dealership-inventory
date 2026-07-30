@@ -24,7 +24,14 @@ export default function Login() {
       localStorage.setItem('user', JSON.stringify(user));
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Incorrect email or password');
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        setError(detail[0].msg);
+      } else if (typeof detail === 'string') {
+        setError(detail);
+      } else {
+        setError('Incorrect email or password');
+      }
     } finally {
       setLoading(false);
     }

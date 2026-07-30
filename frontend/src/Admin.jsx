@@ -208,7 +208,7 @@ export default function Admin() {
                 <input
                   type="number"
                   required
-                  placeholder="25000"
+                  placeholder="500000"
                   className="w-full bg-[#faf8f5] border-2 border-[#1f1f1f] text-[#1f1f1f] px-3 py-2 text-xs font-bold focus:outline-none focus:bg-[#f3edd9] transition-all"
                   value={newVehicle.price}
                   onChange={(e) => setNewVehicle({ ...newVehicle, price: e.target.value })}
