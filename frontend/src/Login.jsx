@@ -141,7 +141,7 @@ export default function Login() {
             </p>
             {/* Retro Barcode Accent */}
             <div className="flex items-center space-x-2">
-              <span className="text-[9px] font-mono font-bold text-slate-400">APX-004-SYS</span>
+              <span className="text-[9px] font-mono font-bold text-slate-400">MII-004-SYS</span>
               <div className="barcode w-24 h-6"></div>
             </div>
           </div>

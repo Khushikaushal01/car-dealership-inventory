@@ -8,8 +8,7 @@ export default function Register() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: '',
-    isAdmin: false
+    password: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,8 +22,7 @@ export default function Register() {
       await axios.post(`${API_URL}/auth/register`, {
         username: formData.username,
         email: formData.email,
-        password: formData.password,
-        is_admin: formData.isAdmin
+        password: formData.password
       });
       navigate('/login');
     } catch (err) {
@@ -140,18 +138,7 @@ export default function Register() {
                 />
               </div>
 
-              <div className="flex items-center py-2">
-                <input
-                  type="checkbox"
-                  id="isAdmin"
-                  className="w-4 h-4 rounded bg-[#faf8f5] border-2 border-[#1f1f1f] text-[#d1382b] focus:ring-0 focus:ring-offset-0 cursor-pointer"
-                  checked={formData.isAdmin}
-                  onChange={(e) => setFormData({ ...formData, isAdmin: e.target.checked })}
-                />
-                <label htmlFor="isAdmin" className="ml-2 text-xs font-bold uppercase tracking-wider text-[#1f1f1f] cursor-pointer select-none">
-                  Register as Administrator / 管理者登録
-                </label>
-              </div>
+
 
               <button
                 type="submit"
@@ -172,7 +159,7 @@ export default function Register() {
             </p>
             {/* Retro Barcode Accent */}
             <div className="flex items-center space-x-2">
-              <span className="text-[9px] font-mono font-bold text-slate-400">APX-004-SYS</span>
+              <span className="text-[9px] font-mono font-bold text-slate-400">MII-004-SYS</span>
               <div className="barcode w-24 h-6"></div>
             </div>
           </div>
