@@ -81,8 +81,8 @@ export default function Dashboard() {
             <span className="text-[10px] font-mono font-bold tracking-widest text-[#1b5c65] uppercase block mb-1">
               BUILT FOR THE STREETS. BORN TO INSPIRE.
             </span>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-[#1f1f1f] leading-none">
-              CAR DEALERSHIP INVENTORY / <span className="text-[#d1382b]">伝説の車</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter text-[#1f1f1f] leading-tight break-words">
+              CAR DEALERSHIP INVENTORY <br className="md:hidden" /> / <span className="text-[#d1382b] inline-block">伝説の車</span>
             </h1>
           </div>
           <div className="mt-4 md:mt-0 flex flex-col items-end border-l-2 md:border-l-0 md:border-t-0 border-[#1f1f1f] pl-4 md:pl-0 pt-2 md:pt-0">
