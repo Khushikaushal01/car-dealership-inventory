@@ -58,39 +58,37 @@ def get_current_admin(current_user: User = Depends(get_current_user)):
 
 @router.post("/register")
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
-    # Check if email is already registered
-    existing_email = db.query(User).filter(User.email == user_in.email).first()
-    if existing_email:
+    """
+    Register a new user account.
+
+    Security note: callers can never set their own role or is_admin flag.
+    Every new account always starts as role='user', is_admin=False.
+    To create an admin, update the DB directly after the fact.
+    """
+    # Check email uniqueness
+    if db.query(User).filter(User.email == user_in.email).first():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered"
         )
-    
-    # Check if username is already registered
-    existing_username = db.query(User).filter(User.username == user_in.username).first()
-    if existing_username:
+    # Check username uniqueness
+    if db.query(User).filter(User.username == user_in.username).first():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username already registered"
         )
 
-    # Determine if user is admin
-    is_admin = user_in.is_admin
-    if "admin" in user_in.username.lower() or "admin" in user_in.email.lower():
-        is_admin = True
-
     db_user = User(
         username=user_in.username,
         email=user_in.email,
         password=hash_password(user_in.password),
-        is_admin=is_admin
+        role="user",      # always — no client override allowed
+        is_admin=False,   # always — no client override allowed
     )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return {
-        "message": "User registered successfully"
-    }
+    return {"message": "User registered successfully"}
 
 
 @router.post("/login")
